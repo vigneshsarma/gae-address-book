@@ -14,7 +14,7 @@ from google.appengine.ext.webapp import template
 class AddressBook(db.Model):
   """Models an Address book entry with an subscriber id, name and address,  pincode and subscribed or not."""
   subid = db.StringProperty(multiline=False)
-  address = db.StringProperty(multiline=True)
+  house_name = db.StringProperty(multiline=True)
   pin = db.StringProperty(multiline=False)
   subscribed = db.BooleanProperty()
 
@@ -47,12 +47,16 @@ class ListAllContacts(webapp.RequestHandler):
     contacts = db.GqlQuery("SELECT * "
                             "FROM AddressBook "
                             "WHERE ANCESTOR IS :1 "
-                            "ORDER BY subid DESC LIMIT 10",
+                            "ORDER BY subid DESC",
                             addressbook_key())
-    template_values={'contacts':contacts,}                       
+    template_values={'contacts':contacts,}         
+    
+    self.response.headers['Content-Type'] = 'text/plain'
+    for contact in contacts:
+      self.response.out.write('Hello, ' + contact.house_name)              
 
-    path = os.path.join(os.path.dirname(__file__), 'html/all_contacts.html')
-    self.response.out.write(template.render(path, template_values))
+   # path = os.path.join(os.path.dirname(__file__), 'html/all_contacts.html')
+    #self.response.out.write(template.render(path, template_values))
   
   
 class InsertNewSubscriber(webapp.RequestHandler):
@@ -61,13 +65,13 @@ class InsertNewSubscriber(webapp.RequestHandler):
     addressBook = AddressBook(parent=addressbook_key())
     addressBook.subid = self.request.get('subid')
     addressBook.house_name = self.request.get('house_name')
-    addressBook.pin = self.request.get('pin')[:-1]
+    addressBook.pin = self.request.get('pin')
     subscribed=self.request.get('subscribed')
     if subscribed=='on':addressBook.subscribed = True
     else:addressBook.subscribed = False
     
     template_values={'subid':self.request.get('subid'),
-                     'house_name':self.request.get('house_name').replace('\n','<br>'),
+                     'house_name':addressBook.house_name,#.replace('\n','<br>'),
                      'pin':self.request.get('pin'),
                      'subscribed':addressBook.subscribed,
                      }
