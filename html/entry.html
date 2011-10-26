@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>Address Book</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+  </script>
+  <script type="text/javascript">
+    $('#pin').click($.get("/pin",
+   function(data){
+     $('#pinresult').append( "Name: " + data.name ) // John
+   }, "json");
+   );
+  </script>
+  <body >
+    <h1>Welcome to {{name}}'s Address book</h1>
+    <a href="/" >Add New</a><a href="/allcontacts" >List all</a>
+    <form action="newsubs" method="post" >
+      <table border="0px" align="center" >
+        <tr>
+          <td>Subscriber Id :</td>
+          <td><input type="text" name="subid"></td>
+        </tr>
+        <tr>
+          <td >Name & Address :</td>
+          <td><textarea rows="4" cols="30" name="house_name"></textarea></td>
+        </tr>
+        <tr>
+          <td>Pin :</td>
+          <td id='pin'><input type="text" name="pin"></td>
+
+        </tr>
+        <tr>
+          <td>Subscribed</td>
+          <td><input type="checkbox" name="subscribed"></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center"><input type="submit" value="Submit" /></td>
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>

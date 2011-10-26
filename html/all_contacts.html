@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>Address Book</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+  </script>
+  <script type="text/javascript">
+  </script>
+  <body >
+	<h2>Shall we enter the fallowing data?</h2>
+		<a href="/" >Add New</a><a href="/allcontacts" >List all</a>
+      <table border="1px" align="center" >
+        <tr>
+          <th>Subscriber Id </th>
+          <th >Name & Address </th>
+          <th>Pin </th>
+          <th>Subscribed</th>
+        </tr>
+        {% for contact in contacts %}
+         <tr >
+          <td>{{contact.subid}}</td> 
+                
+          <td>{{contact.house_name}}</td>
+       
+          <td id='pin'>{{contact.pin}}></td>
+               
+          <td>{{contact.subscribed}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {{contacts}}
+  </body>
+</html>
